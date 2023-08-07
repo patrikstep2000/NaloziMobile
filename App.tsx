@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from "react";
+import {
+  AppStateProvider,
+  useAppStateContext,
+} from "./src/context/AppStateContext";
+import { AuthContextProvider } from "./src/context/AuthContext";
+import SplashScreen from "./src/screens/SplashScreen";
+import AppStack from "./src/AppStack";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+  const [ isLoading, setIsLoading ] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 5000)
+  }, []);
+
+  return isLoading ? (
+    <SplashScreen />
+  ) : (
+    <AppStateProvider>
+      <AuthContextProvider>
+        <AppStack />
+      </AuthContextProvider>
+    </AppStateProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
